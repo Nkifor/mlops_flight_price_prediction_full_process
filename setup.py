@@ -18,7 +18,7 @@ def get_requirements(filename:str)->List[str]:
 
 
 setup(
-    name='mlops heart disease indicators full process',
+    name='mlops flight price prediction',
     version='0.1',
     author='Krzysztof',
     author_email='stasiek3000@gmail.com',

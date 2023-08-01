@@ -10,7 +10,7 @@ from src.exception import CustomException
 from src.logger import logging
 import os
 from src.utils import save_object
-from scipy.sparse import hstack
+from scipy.sparse import hstack, csr_matrix
 
 
 @dataclass
@@ -124,8 +124,19 @@ class DataTransformation:
             #print(target_feature_train_df)
             #print(target_feature_test_df)
 
+            input_feature_train_arr = input_feature_train_arr.toarray()
+            input_feature_test_arr = input_feature_test_arr.toarray()
+
             target_feature_train_arr = np.array(target_feature_train_df).reshape(-1, 1)
             target_feature_test_arr = np.array(target_feature_test_df).reshape(-1, 1)
+
+
+            train_arr = np.c_[
+                input_feature_train_arr, np.array(target_feature_train_df)
+            ]
+            test_arr = np.c_[
+                input_feature_test_arr, np.array(target_feature_test_df)]
+
 
             print(input_feature_train_arr)
             print(target_feature_train_arr)
@@ -133,10 +144,14 @@ class DataTransformation:
             print(input_feature_train_arr.shape)
             print(target_feature_train_arr.shape)
 
-            train_arr = hstack([input_feature_train_arr, target_feature_train_arr])
+            ##Approach with creating sparse matrix  -
+                ## change format from dense(target_feature_train_df)
+                    ##  to sparse and then hstack (input_feature_train_arr is already sparse)
+                ## change format from dense(target_feature_test_df)
+                    ## to sparse and then hstack (input_feature_test_arr is already sparse)
 
-            #np.array
-            test_arr = hstack([input_feature_test_arr, target_feature_test_arr])
+            ##train_arr = hstack([input_feature_train_arr, target_feature_train_arr])
+            ##test_arr = hstack([input_feature_test_arr, target_feature_test_arr])
 
             logging.info(f'Saved preprocessing object.')
 

@@ -10,6 +10,8 @@ from src.exception import CustomException
 from src.logger import logging
 import os
 from src.utils import save_object
+from scipy.sparse import hstack
+
 
 @dataclass
 class DataTransformationConfig:
@@ -26,38 +28,40 @@ class DataTransformation:
         """
         try:
             numerical_columns=[
-                'Unnamed: 0',
-                'duration',
-                'days_left',
-                'price']
+                #"Unnamed: 0",
+                "duration",
+                "days_left",
+                #"price",
+            ]
             categorical_columns=[
-                'airline',
-                'flight',
-                'source_city',
-                'departure_time',
-                'stops',
-                'arrival_time',
-                'destination_city',
-                'class',]
+                "airline",
+                #"flight",
+                "source_city",
+                "departure_time",
+                "stops",
+                "arrival_time",
+                "destination_city",
+                "class",
+            ]
 
             numerical_pipeline=Pipeline(
                 steps=[
-                    ('imputer',SimpleImputer(strategy='median')),
-                    ('scaler',StandardScaler())
+                    ("imputer",SimpleImputer(strategy="median")),
+                    ("scaler",StandardScaler())
                 ]
             )
 
-            logging.info("Numerical columns imputation and standard scaling completed.")
+
 
             categorical_pipeline=Pipeline(
                 steps=[
-                    ('imputer',SimpleImputer(strategy='most_frequent')),
-                    ('onehot',OneHotEncoder()),
-                    ('scaler',StandardScaler())
+                    ("imputer",SimpleImputer(strategy="most_frequent")),
+                    ("one_hot_encoder",OneHotEncoder()),
+                    ("scaler",StandardScaler(with_mean=False))
                 ]
             )
-
-            logging.info("Categorial columns imputation encoding completed and standard scaling completed.")
+            logging.info(f"Numerical columns: {numerical_columns} imputation and standard scaling completed.")
+            logging.info(f"Categorial columns: {categorical_columns} imputation encoding completed and standard scaling completed.")
 
             preprocessor=ColumnTransformer(
                 [
@@ -73,24 +77,81 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e,sys)
 
-    def initiate_data_transformation(self,train_data_path,test_data_path):
+    def initiate_data_transformation(self,train_path,test_path):
 
         try:
-            train_df=pd.read_csv(train_data_path)
-            test_df=pd.read_csv(test_data_path)
+            train_df=pd.read_csv(train_path)
+            test_df=pd.read_csv(test_path)
+            f"{print(train_df)} /\ tu powinien byc df z trainem"
+            f"{print(test_df)} /\ tu powinien byc df z testem"
 
-            logging.info("Read test and train data as dataframe completed.")
+
+            logging.info(f"Read test and train data as dataframe completed. {print(train_df.columns)}  {print(test_df.columns)}")
             logging.info("Obtaining preprocessor object.")
 
-            preprocessor_object=self.get_data_transformer_object()
+            preprocessing_object=self.get_data_transformer_object()
 
-            target_column_name='price'
-            numerical_columns=[
-                'Unnamed: 0',
-                'duration',
-                'days_left',
-                'price']
+            target_column_name="price"
+            columns_to_drop=[
+                "Unnamed: 0",
+                "flight",
+                "price"]
+            target_feature_train_df=train_df[target_column_name]
+            input_feature_train_df=train_df.drop(columns=columns_to_drop,axis=1)
 
-            input_features_train_df=train_df.drop(target_column_name,axis=1)
+            target_feature_test_df=test_df[target_column_name]
+            input_feature_test_df=test_df.drop(columns=columns_to_drop,axis=1)
 
-        except:
+
+            logging.info(f"Applying preprocessing object on training dataframe and testing dataframe. ")
+            #print(input_feature_train_df)
+            #print(input_feature_test_df)
+
+            input_feature_train_arr=preprocessing_object.fit_transform(input_feature_train_df)
+            input_feature_test_arr=preprocessing_object.transform(input_feature_test_df)
+
+            print(input_feature_train_arr)
+            print(target_feature_train_df)
+
+            print(input_feature_train_arr.shape)
+            print(target_feature_train_df.shape)
+
+            #print(input_feature_test_arr.shape[0])
+            #print(target_feature_test_df.shape[0])
+
+            #print(input_feature_train_arr)
+            #print(input_feature_test_arr)
+            #print(target_feature_train_df)
+            #print(target_feature_test_df)
+
+            target_feature_train_arr = np.array(target_feature_train_df).reshape(-1, 1)
+            target_feature_test_arr = np.array(target_feature_test_df).reshape(-1, 1)
+
+            print(input_feature_train_arr)
+            print(target_feature_train_arr)
+
+            print(input_feature_train_arr.shape)
+            print(target_feature_train_arr.shape)
+
+            train_arr = hstack([input_feature_train_arr, target_feature_train_arr])
+
+            #np.array
+            test_arr = hstack([input_feature_test_arr, target_feature_test_arr])
+
+            logging.info(f'Saved preprocessing object.')
+
+            save_object(
+
+                file=self.data_transformation_config.preprocessor_obj_file_path,
+                obj=preprocessing_object
+
+
+            )
+
+            return (
+                train_arr,
+                test_arr,
+                self.data_transformation_config.preprocessor_obj_file_path,
+            )
+        except Exception as e:
+            raise CustomException(e,sys)

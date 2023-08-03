@@ -7,4 +7,5 @@ catboost
 xgboost
 dill
 scipy
+Flask
 #-e .

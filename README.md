@@ -1,6 +1,8 @@
 ## MLOPS Flight Price Prediction - Full Process
 
-![Screenshot](static\proj_demo.PNG)
+![Screenshot](static/proj_demo.PNG)
+
+[Link to prediction](http://54.93.108.95:8080/predict)
 
 ## Description and shortened context of the training data
 

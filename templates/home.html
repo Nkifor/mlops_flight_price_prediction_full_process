@@ -1,179 +1,336 @@
 <html>
-<body>
-    <div class="login">
-       <h1>Flight price prediction of main metro cities in India </h1>
 
-       <form action="{{ url_for('predict_datapoint')}}" method="post">
-        <h1>
-            <legend>Based on data from 50 days: February 11th to March 31st, 2022</legend>
-        </h1>
+<head>
+    <title>Flight Price Prediction</title>
+    <style>
 
-        </div>
-        <div class="mb-3">
-            <label class="form-label">From</label>
-            <select class="form-control" name="source_city" placeholder="Enter city from flight will be conducted" required>
-                <option class="placeholder" selected disabled value="">Source</option>
-                <option value="Delhi">
-                    Delhi
-                </option>
-                <option value="Hyderabad">
-                    Hyderabad
-                </option>
-                <option value="Kolkata">
-                    Kolkata
-                </option>
-                <option value="Mumbai">
-                    Mumbai
-                </option>
-                <option value="Bangalore">
-                    Bangalore
-                </option>
-                <option value="Chennai">
-                    Chennai
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Destination</label>
-            <select class="form-control" name="destination_city" placeholder="Enter city of destination" required>
-                <option class="placeholder" selected disabled value="">Destination</option>
-                <option value="Delhi">
-                    Delhi
-                </option>
-                <option value="Hyderabad">
-                    Hyderabad
-                </option>
-                <option value="Kolkata">
-                    Kolkata
-                </option>
-                <option value="Mumbai">
-                    Mumbai
-                </option>
-                <option value="Bangalore">
-                    Bangalore
-                </option>
-                <option value="Chennai">
-                    Chennai
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Stopage</label>
-            <select class="form-control" name="stops" placeholder="Enter required stops" required>
-                <option class="placeholder" selected disabled value="">Select number of stops</option>
-                <option value="zero">
-                    0
-                </option>
-                <option value="one">
-                    1
-                </option>
-                <option value="two_or_more">
-                    2 or more
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Name of Airline which flight price will be checked</label>
-            <select class="form-control" name="airline" placeholder="Select Airline"
-                required>
-                <option class="placeholder" selected disabled value="">Select Airline</option>
-                <option value="Indigo">
-                    IndiGo
-                </option>
-                <option value="AirAsia">
-                    Air Asia
-                </option>
-                <option value="SpiceJet">
-                    SpiceJet
-                </option>
-                <option value="Vistara">
-                    Vistara
-                </option>
-                <option value="GO_FIRST">
-                    GO FIRST
-                </option>
-                <option value="Air_India">
-                    Air India
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Departure time</label>
-            <select class="form-control" name="departure_time" placeholder="Enter time of departure" required>
-                <option class="placeholder" selected disabled value="">Select time of departure</option>
-                <option value="Early_Morning">
-                    Early Morning
-                </option>
-                <option value="Morning">
-                    Morning
-                </option>
-                <option value="Afternoon">
-                    Afternoon
-                </option>
-                <option value="Evening">
-                    Evening
-                </option>
-                <option value="Night">
-                    Night
-                </option>
-                <option value="Late_Night">
-                    Late Night
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Arrival time</label>
-            <select class="form-control" name="arrival_time" placeholder="Enter time of arrival" required>
-                <option class="placeholder" selected disabled value="">Select time of arrival</option>
-                <option value="Early_Morning">
-                    Early Morning
-                </option>
-                <option value="Morning">
-                    Morning
-                </option>
-                <option value="Afternoon">
-                    Afternoon
-                </option>
-                <option value="Evening">
-                    Evening
-                </option>
-                <option value="Night">
-                    Night
-                </option>
-                <option value="Late_Night">
-                    Late Night
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Class of Flight</label>
-            <select class="form-control" name="class_of_flight" placeholder="Enter class of the flight" required>
-                <option class="placeholder" selected disabled value="">Select class of the flight</option>
-                <option value="Economy">
-                    Economy
-                </option>
-                <option value="Business">
-                    Business
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Write days to departure</label>
-            <input class="form-control" type="number" name="days_left"
-                placeholder="Enter days to departure" min='1' max='49' />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Write duration in hours</label>
-            <input class="form-control" type="number" name="duration"
-                placeholder="Enter days to departure" min='1' max='50' />
-        </div>
+        body {
 
-        <div class="mb-3">
-            <input class="btn btn-primary" type="submit" value="Predict Price of the flight" required />
-        </div>
-    </form>
-    <h2>
-       THE  prediction is {{results}}
-    </h2>
-   <body>
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background-image:url({{url_for('static', filename='plane_wallpaper_2.jpg')}});
+
+        }
+
+
+        .container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            opacity: 0.9;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .container h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        .container h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between; /* Pola będą przysunięte do prawej */
+            align-items: center;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 20px; /* Dodajemy padding z prawej strony */
+        }
+
+        .form-group label {
+            flex-basis: 30%;
+            font-size: 18px;
+            text-align: left;
+            color: #555;
+        }
+
+        .form-group .input-group {
+            flex-basis: 70%;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .form-group select,
+        .form-group input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group select.placeholder,
+        .form-group input::placeholder {
+            color: #888;
+        }
+
+        .form-group .submit-button {
+            flex-basis: 100%;
+            padding-left: 20px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        .results {
+            margin-top: 30px;
+            text-align: center;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: fade-in 0.5s;
+        }
+
+
+
+
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+    <body>
+
+
+        <div class="container">
+
+
+            <h2> FLIGHT PRICE PREDICTION  </h2>
+
+
+
+
+
+            <form action="{{ url_for('predict_datapoint')}}" method="post">
+             <h1>
+                 <h3>Based on data of flights between of main metro Indian cities from 50 days: February 11th to March 31st, 2022</h3>
+             </h1>
+
+
+             <div class="mb-3">
+                 <label> Arrival City </label>
+                 <select class="form-control" name="source_city" placeholder="Enter city from flight will be conducted" required>
+                     <option class="placeholder" selected disabled value="">Arrival City</option>
+                     <option value="Delhi">
+                         Delhi
+                     </option>
+                     <option value="Hyderabad">
+                         Hyderabad
+                     </option>
+                     <option value="Kolkata">
+                         Kolkata
+                     </option>
+                     <option value="Mumbai">
+                         Mumbai
+                     </option>
+                     <option value="Bangalore">
+                         Bangalore
+                     </option>
+                     <option value="Chennai">
+                         Chennai
+                     </option>
+                 </select>
+             </div>
+             <div class="mb-3">
+                 <label class="form-label">Destination</label>
+                 <select class="form-control" name="destination_city" placeholder="Enter city of destination" required>
+                     <option class="placeholder" selected disabled value="">Select city of destination</option>
+                     <option value="Delhi">
+                         Delhi
+                     </option>
+                     <option value="Hyderabad">
+                         Hyderabad
+                     </option>
+                     <option value="Kolkata">
+                         Kolkata
+                     </option>
+                     <option value="Mumbai">
+                         Mumbai
+                     </option>
+                     <option value="Bangalore">
+                         Bangalore
+                     </option>
+                     <option value="Chennai">
+                         Chennai
+                     </option>
+                 </select>
+             </div>
+             <div class="mb-3">
+                 <label class="form-label">Stoppage</label>
+                 <select class="form-control" name="stops" placeholder="Enter required stops" required>
+                     <option class="placeholder" selected disabled value="">Select number of stops</option>
+                     <option value="zero">
+                         0
+                     </option>
+                     <option value="one">
+                         1
+                     </option>
+                     <option value="two_or_more">
+                         2 or more
+                     </option>
+                 </select>
+             </div>
+             <div class="mb-3">
+                 <label class="form-label">Name of Airline which flight price will be checked</label>
+                 <select class="form-control" name="airline" placeholder="Select Airline"
+                     required>
+                     <option class="placeholder" selected disabled value="">Select Airline</option>
+                     <option value="Indigo">
+                         IndiGo
+                     </option>
+                     <option value="AirAsia">
+                         Air Asia
+                     </option>
+                     <option value="SpiceJet">
+                         SpiceJet
+                     </option>
+                     <option value="Vistara">
+                         Vistara
+                     </option>
+                     <option value="GO_FIRST">
+                         GO FIRST
+                     </option>
+                     <option value="Air_India">
+                         Air India
+                     </option>
+                 </select>
+             </div>
+             <div class="mb-3">
+                 <label class="form-label">Departure time</label>
+                 <select class="form-control" name="departure_time" placeholder="Enter time of departure" required>
+                     <option class="placeholder" selected disabled value="">Select time of departure</option>
+                     <option value="Early_Morning">
+                         Early Morning
+                     </option>
+                     <option value="Morning">
+                         Morning
+                     </option>
+                     <option value="Afternoon">
+                         Afternoon
+                     </option>
+                     <option value="Evening">
+                         Evening
+                     </option>
+                     <option value="Night">
+                         Night
+                     </option>
+                     <option value="Late_Night">
+                         Late Night
+                     </option>
+                 </select>
+             </div>
+             <div class="mb-3">
+                 <label class="form-label">Arrival time</label>
+                 <select class="form-control" name="arrival_time" placeholder="Enter time of arrival" required>
+                     <option class="placeholder" selected disabled value="">Select time of arrival</option>
+                     <option value="Early_Morning">
+                         Early Morning
+                     </option>
+                     <option value="Morning">
+                         Morning
+                     </option>
+                     <option value="Afternoon">
+                         Afternoon
+                     </option>
+                     <option value="Evening">
+                         Evening
+                     </option>
+                     <option value="Night">
+                         Night
+                     </option>
+                     <option value="Late_Night">
+                         Late Night
+                     </option>
+                 </select>
+             </div>
+             <div class="mb-3">
+                 <label class="form-label">Class of Flight</label>
+                 <select class="form-control" name="class_of_flight" placeholder="Enter class of the flight" required>
+                     <option class="placeholder" selected disabled value="">Select class of the flight</option>
+                     <option value="Economy">
+                         Economy
+                     </option>
+                     <option value="Business">
+                         Business
+                     </option>
+                 </select>
+             </div>
+             <div class="mb-3">
+                 <label class="form-label">Write days to departure</label>
+                 <input class="form-control" type="number" name="days_left" required
+                     placeholder="Enter days to departure" min='1' max='49' />
+             </div>
+             <div class="mb-3">
+                 <label class="form-label">Write duration in hours</label>
+                 <input class="form-control" type="number" name="duration" required
+                     placeholder="Enter days to departure" min='1' max='50' />
+             </div>
+
+             <div class="form-group">
+                 <button type="submit"> Predict Price of the flight  </button>
+             </div>
+            </form>
+        <div class="results">
+
+       <h2 id="predictionText"style="display: none;" > The cost of flight would be </h2>
+       <h2 id="predictionResult">  {{results}}     </h2>
+       <h2 id="predictionText2" style="display: none;"> Indian Rupees  </h2>
+
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.querySelector('.container');
+            container.classList.add('show');
+
+            const results = document.querySelector('.results');
+            results.classList.add('show');
+
+            const predictionText = document.getElementById('predictionText');
+            const predictionResult = document.getElementById('predictionResult');
+            const predictionText2 = document.getElementById('predictionText2');
+            const resultsValue = predictionResult.textContent.trim();
+
+            if (resultsValue) {
+                predictionText.style.display = 'inline';
+                predictionText2.style.display = 'inline';
+            }
+        });
+    </script>
+
+
+
+</body>
 </html>

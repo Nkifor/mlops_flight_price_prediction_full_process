@@ -5,7 +5,8 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from src.pipeline.prediction_pipeline import PredictionPipeline, CustomData
 
-application = Flask(__name__)
+application = Flask(__name__,
+                    static_folder='static')
 
 app=application
 
@@ -13,7 +14,7 @@ app=application
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('home.html')
 
 
 @app.route('/predict',methods=['GET','POST'])
@@ -42,7 +43,8 @@ def predict_datapoint():
         prediction_pipeline=PredictionPipeline()
         print("During Prediction")
         results = prediction_pipeline.predict(pred_df)
+        rounded_results = np.round(results[0], 2)
         print("After Prediction")
-        return render_template('index.html',results=results[0])
+        return render_template('home.html',results=rounded_results)
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

@@ -2,7 +2,7 @@
 
 ![Screenshot](static/proj_demo.PNG)
 
-[Link to prediction](http://3.77.237.121/predict)
+[Link to prediction](http://18.156.174.228/predict)
 
 ## Description and shortened context of the training data
 

@@ -13,10 +13,10 @@ ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 RUN apt update - && apt install awscli -y
 
 RUN pip install -r requirements.txt
-RUN dvc remote modify myremote \
-                    access_key_id $AWS_ACCESS_KEY_ID
-RUN dvc remote modify myremote \
-                    secret_access_key $AWS_SECRET_ACCESS_KEY
+RUN dvc remote modify --local myremote \
+                    access_key_id ${AWS_ACCESS_KEY_ID}
+RUN dvc remote modify --local myremote \
+                    secret_access_key ${AWS_SECRET_ACCESS_KEY}
 RUN dvc remote add -d storage s3://mlopsflightpricepredictionartifacts
 RUN dvc pull
 CMD ["python3", "app.py"]

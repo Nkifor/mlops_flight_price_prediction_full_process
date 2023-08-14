@@ -2,7 +2,7 @@
 
 ![Screenshot](static/proj_demo.PNG)
 
-[Link to prediction](http://52.28.154.230:8080/predict)
+[Link to prediction](http://:8080/predict)
 
 ## Description and shortened context of the training data
 

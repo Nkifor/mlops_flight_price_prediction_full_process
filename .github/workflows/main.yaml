@@ -19,6 +19,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Add DVC GPG key manually
+        run: |
+          gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0x6B05F25D762E3157
+          gpg --export --armor 0x6B05F25D762E3157 | sudo apt-key add -
+
       - name: Install DVC
         run: |
           curl -sS https://dvc.org/deb/dvc.list | sudo tee /etc/apt/sources.list.d/dvc.list > /dev/null

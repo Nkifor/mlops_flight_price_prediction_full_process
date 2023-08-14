@@ -10,4 +10,6 @@ scipy
 Flask
 dvc
 dvc-s3
+awscli
+boto3
 #-e .

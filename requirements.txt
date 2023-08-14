@@ -8,4 +8,5 @@ xgboost
 dill
 scipy
 Flask
+dvc
 #-e .

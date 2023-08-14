@@ -13,7 +13,7 @@ ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 RUN apt update - && apt install awscli -y
 
 RUN pip install -r requirements.txt
-RUN remote modify --local myremote \
+RUN dvc remote modify --local myremote \
                     access_key_id AWS_ACCESS_KEY_ID
 RUN dvc remote modify --local myremote \
                     secret_access_key AWS_SECRET_ACCESS_KEY

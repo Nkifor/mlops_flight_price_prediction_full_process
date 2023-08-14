@@ -47,7 +47,7 @@ def predict_datapoint():
         print("After Prediction")
         return render_template('home.html',results=rounded_results)
 if __name__ == '__main__':
-    #app.run(host='0.0.0.0', port=8080) #AWS build
-    app.run(host="0.0.0.0", debug=True) #local - for testing
+    app.run(host='0.0.0.0', port=8080) #AWS build
+    #app.run(host="0.0.0.0", debug=True) #local - for testing
 
 

@@ -4,7 +4,7 @@ LABEL maintainer="Nkifor"
 WORKDIR /app
 COPY . /app
 
-COPY  https://flightpredictioncredentials.s3.eu-central-1.amazonaws.com/.aws/credentials.txt /app/.aws/credentials.txt
+
 
 
 
@@ -20,6 +20,8 @@ RUN apt update - && apt install awscli -y
 
 RUN pip install -r requirements.txt
 RUN wget https://flightpredictioncredentials.s3.eu-central-1.amazonaws.com/.aws/credentials.txt
+RUN mkdir -p /app/.aws && mv credentials.txt /app/.aws/credentials.txt
+
 RUN session = boto3.Session(profile_name='flightpred')
 RUN credentials = session.get_credentials()
 ARG AWS_ACCESS_KEY_ID

@@ -13,14 +13,14 @@ class PredictionPipeline:
 
     def predict(self,features):
         try:
-            local_model_path =os.path.join('artifacts', 'model.pkl')
-            model_path = 's3://mlopsflightpricepredictionartifacts/model.pkl'
+            model_path =os.path.join('artifacts', 'model.pkl')
+            #model_path = 's3://mlopsflightpricepredictionartifacts/model.pkl'
 
 
 
-            with dvc.api.open(model_path) as f_model:
-                with open(local_model_path, 'wb') as local_model_file:
-                    local_model_file.write(f_model.read())
+            #with dvc.api.open(model_path) as f_model:
+            #    with open(local_model_path, 'wb') as local_model_file:
+            #        local_model_file.write(f_model.read())
 
             preprocessor_path = os.path.join('artifacts','proprocessor.pkl')
 

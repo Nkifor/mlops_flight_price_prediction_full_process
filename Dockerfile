@@ -13,7 +13,7 @@ RUN apt-get install -y python3-dev
 
 RUN pip install -r requirements.txt
 
-RUN wget https://flightpredictioncredentials.s3.eu-central-1.amazonaws.com/.aws/credentials.txt -O /tmp/credentials.txt
+RUN aws s3 cp s3://flightpredictioncredentials/.aws/credentials.txt /tmp/credentials.txt
 RUN mkdir -p /app/.aws && python3 -c "import configparser; config = configparser.ConfigParser(); config.read('/tmp/credentials.txt'); print(f'AWS_ACCESS_KEY_ID={config['flightpred']['aws_access_key_id']}'); print(f'AWS_SECRET_ACCESS_KEY={config['flightpred']['aws_secret_access_key']}')" > /app/.aws/credentials
 
 

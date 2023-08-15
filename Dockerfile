@@ -6,6 +6,10 @@ COPY . /app
 
 
 RUN apt update - && apt install awscli -y
+RUN apt-get update && apt-get install -y wget
+
+RUN apt-get install -y python3-pip
+RUN apt-get install -y python3-dev
 
 
 RUN pip install -r requirements.txt

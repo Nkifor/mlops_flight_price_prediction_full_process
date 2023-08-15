@@ -5,29 +5,13 @@ WORKDIR /app
 COPY . /app
 
 
-
-
-
-
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ENV AWS_ACCESS_KEY_ID=credentials.access_key
-ENV AWS_SECRET_ACCESS_KEY=credentials.secret_key
-
-
 RUN apt update - && apt install awscli -y
 
 
 RUN pip install -r requirements.txt
-RUN wget https://flightpredictioncredentials.s3.eu-central-1.amazonaws.com/.aws/credentials.txt
-RUN mkdir -p /app/.aws && mv credentials.txt /app/.aws/credentials.txt
 
-RUN session = boto3.Session(profile_name='flightpred')
-RUN credentials = session.get_credentials()
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ENV AWS_ACCESS_KEY_ID=credentials.access_key
-ENV AWS_SECRET_ACCESS_KEY=credentials.secret_key
+RUN wget https://flightpredictioncredentials.s3.eu-central-1.amazonaws.com/.aws/credentials.txt -O /tmp/credentials.txt
+RUN mkdir -p /app/.aws && python3 -c "import configparser; config = configparser.ConfigParser(); config.read('/tmp/credentials.txt'); print(f'AWS_ACCESS_KEY_ID={config['username']['aws_access_key_id']}'); print(f'AWS_SECRET_ACCESS_KEY={config['username']['aws_secret_access_key']}')" > /app/.aws/credentials
 
 
 RUN dvc remote modify --local myremote \

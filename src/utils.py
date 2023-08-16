@@ -1,6 +1,6 @@
 import os
 import sys
-
+import bz2
 import numpy as np
 import pandas as pd
 import dill
@@ -68,3 +68,19 @@ def load_object(file):
         raise CustomException(e, sys)
 
 
+def load_compressed_object(file):
+    #try:                                                     First  compression approach
+    #    with bz2.BZ2File(file, 'rb') as file_object:
+    #        return pickle.load(file_object)
+    #except Exception as e:
+    #    raise CustomException(e, sys)
+    try:                                                      #Second compression approach
+        with open(file, 'rb') as file_object:
+            decomp = bz2.BZ2Decompressor()
+            data = file_object.read()
+            decompressed_data = decomp.decompress(data)
+            return pickle.loads(decompressed_data)
+
+
+    except Exception as e:
+        raise CustomException(e, sys)

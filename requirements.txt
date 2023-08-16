@@ -11,5 +11,5 @@ Flask
 dvc
 dvc-s3
 awscli
-
+git-lfs
 #-e .

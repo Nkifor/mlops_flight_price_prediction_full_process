@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import load_object
+from src.utils import load_object, load_compressed_object
 import dvc.api
 
 
@@ -13,8 +13,9 @@ class PredictionPipeline:
 
     def predict(self,features):
         try:
-            model_path =os.path.join('artifacts', 'model.pkl')
+            #model_path =os.path.join('artifacts', 'model.pkl')
             #model_path = 's3://mlopsflightpricepredictionartifacts/model.pkl'
+            compressed_model_path = os.path.join('artifacts','model.pkl.bz2')
 
 
 
@@ -25,12 +26,14 @@ class PredictionPipeline:
             preprocessor_path = os.path.join('artifacts','proprocessor.pkl')
 
             print("Before Loading")
-            model=load_object(file=model_path)
+            #model=load_object(file=model_path)
+            compressed_model = load_compressed_object(file=compressed_model_path)
             preprocessor=load_object(file=preprocessor_path)
 
             print("After Loading")
             data_scaled=preprocessor.transform(features)
-            model_prediction=model.predict(data_scaled)
+            #model_prediction=model.predict(data_scaled)     # for small models
+            model_prediction=compressed_model.predict(data_scaled)
             return model_prediction
 
         except Exception as e:

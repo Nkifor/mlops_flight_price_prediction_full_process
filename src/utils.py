@@ -76,13 +76,16 @@ from cachetools import LRUCache
 cache = LRUCache(maxsize=100)
 
 def load_compressed_object(file):
-    if file in cache:
-        return cache[file]
-    else:
-        with bz2.BZ2File(file, 'rb') as f:
-            obj = pickle.load(f)
-            cache[file] = obj
-            return obj
+    try:
+        if file in cache:
+            return cache[file]
+        else:
+            with bz2.BZ2File(file, 'rb') as f:
+                obj = pickle.load(f)
+                cache[file] = obj
+                return obj
+    except Exception as e:
+        raise CustomException(f"Error loading compressed object from file {file}: {e}", sys)
 
 
 

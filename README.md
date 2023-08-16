@@ -2,7 +2,7 @@
 
 ![Screenshot](static/proj_demo.PNG)
 
-[Link to prediction](http://3.70.137.4:8080/predict)
+[Link to prediction](http://3.70.237.64:8080/predict)
 
 ## Description and shortened context of the training data
 
@@ -26,9 +26,11 @@ Dataset contains information about flight booking options from the website Easem
     - data transformation,
 5. Model evaluation with hyperparameter tunning
 6. Local deployment of prediction model
-7. Setting Dockerfile locally for Run it on Virtual Machine EC2 with ECR after setting IAM
-8. Setting Github Runner and Action for CI/CD to connect with AWS
-9. Run of workflow
+7. Model compression in local environment
+8. Setting Dockerfile locally for Run it on Virtual Machine EC2 with ECR after setting IAM
+9. Setting Github Runner and Action for CI/CD to connect with AWS
+10. Run of workflow
+11. The prediction display may take about 30 seconds due to the reading of the converted model
 
 
 

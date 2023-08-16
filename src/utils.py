@@ -131,7 +131,9 @@ def load_compressed_object(file):
             raise IOError(f"File is not readable: {file}")
 
         with bz2.BZ2File(file, 'rb') as file_object:
-            return pickle.load(file_object)
+            data = bz2.BZ2File(file_object)
+            data = pickle.load(data)
+            return data
                                                          #Second compression approach
             #with open(file, 'rb') as file_object:
             #    decomp = bz2.BZ2Decompressor()
@@ -148,6 +150,9 @@ def load_compressed_object(file):
         # Handle errors when unpickling data
         logging.error(f"Error unpickling data from file: {file}")
         raise CustomException(f"Error unpickling data from file: {file}", sys)
+
+    except OSError as e:
+        raise CustomException(f"Error loading compressed object from file {file}: {e}", sys)
 
     except Exception as e:
         # Handle other errors

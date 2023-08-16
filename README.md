@@ -30,7 +30,7 @@ Dataset contains information about flight booking options from the website Easem
 8. Setting Dockerfile locally for Run it on Virtual Machine EC2 with ECR after setting IAM
 9. Setting Github Runner and Action for CI/CD to connect with AWS
 10. Run of workflow
-11. The prediction display may take about 30 seconds due to the reading of the converted model
+11. The prediction display may take about 30 seconds due to the reading of the compressed model
 
 
 

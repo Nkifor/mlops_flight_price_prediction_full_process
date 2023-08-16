@@ -10,6 +10,7 @@ from sklearn.model_selection import GridSearchCV
 from cachetools import LRUCache
 from src.exception import CustomException
 from functools import lru_cache
+import logging
 import io
 
 
@@ -122,18 +123,33 @@ def load_compressed_model_pickle(file):
 
 
 def load_compressed_object(file):
-    try:                                                     #First  compression approach
+    try:
+        # Check that the file exists and is readable
+        if not os.path.exists(file):
+            raise FileNotFoundError(f"File not found: {file}")
+        if not os.access(file, os.R_OK):
+            raise IOError(f"File is not readable: {file}")
+
         with bz2.BZ2File(file, 'rb') as file_object:
             return pickle.load(file_object)
-    #except Exception as e:
-    #    raise CustomException(e, sys)
-    #try:                                                      #Second compression approach
-    #    with open(file, 'rb') as file_object:
-    #        decomp = bz2.BZ2Decompressor()
-    #        data = file_object.read()
-    #        decompressed_data = decomp.decompress(data)
-    #        return pickle.loads(decompressed_data)
+                                                         #Second compression approach
+            #with open(file, 'rb') as file_object:
+            #    decomp = bz2.BZ2Decompressor()
+            #    data = file_object.read()
+            #    decompressed_data = decomp.decompress(data)
+            #    return pickle.loads(decompressed_data)
 
+    except (FileNotFoundError, IOError) as e:
+        # Handle file-related errors
+        logging.error(f"Error loading compressed data from file {file}: {e}")
+        raise CustomException(e, sys)
+
+    except pickle.UnpicklingError as e:
+        # Handle errors when unpickling data
+        logging.error(f"Error unpickling data from file: {file}")
+        raise CustomException(f"Error unpickling data from file: {file}", sys)
 
     except Exception as e:
+        # Handle other errors
+        logging.error(f"An unexpected error occurred while loading compressed data from file {file}: {e}")
         raise CustomException(e, sys)

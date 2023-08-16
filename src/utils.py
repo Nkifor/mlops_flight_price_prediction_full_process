@@ -8,6 +8,7 @@ import pickle
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 from cachetools import LRUCache
+import concurrent.futures
 
 from src.exception import CustomException
 
@@ -71,7 +72,7 @@ def load_object(file):
 
 
 
-from cachetools import LRUCache
+
 
 cache = LRUCache(maxsize=100)
 
@@ -84,9 +85,10 @@ def load_compressed_object(file):
                 obj = pickle.load(f)
                 cache[file] = obj
                 return obj
+    except EOFError as e:
+        raise CustomException(f"Error loading compressed object from file {file}: {e}. The compressed data may be incomplete or corrupted. Please regenerate the file or obtain a new copy.", sys)
     except Exception as e:
         raise CustomException(f"Error loading compressed object from file {file}: {e}", sys)
-
 
 
 

@@ -3,47 +3,51 @@ import os
 import pandas as pd
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import load_object, load_compressed_object_joblib
+from src.utils import load_object, load_compressed_object, load_compressed_model_pickle
 
 
+
+
+
+#
+
+
+## Lazy model approach: Load model and preprocessor in memory only when required
 
 
 
 class PredictionPipeline:
-    def __init__(self):
-        pass
+   def __init__(self):
+       pass
 
-    def predict(self,features):
-        try:
-            #model_path =os.path.join('artifacts', 'model.pkl')
-            #model_path = 's3://mlopsflightpricepredictionartifacts/model.pkl'
-            compressed_model_path = os.path.join('artifacts','model.pkl.bz2')
+   def predict(self,features):
+       try:
+           #model_path =os.path.join('artifacts', 'model.pkl')
+
+           compressed_model_path = os.path.join('artifacts','model.pkl.bz2')
 
 
+           preprocessor_path = os.path.join('artifacts','proprocessor.pkl')
 
-            #with dvc.api.open(model_path) as f_model:
-            #    with open(local_model_path, 'wb') as local_model_file:
-            #        local_model_file.write(f_model.read())
+           print("Before Loading")
+           #model=load_object(file=model_path)
 
-            preprocessor_path = os.path.join('artifacts','proprocessor.pkl')
+           model=load_compressed_object(compressed_model_path)
+           preprocessor=load_object(file=preprocessor_path)
 
-            print("Before Loading")
-            #model=load_object(file=model_path)
-            compressed_model = load_compressed_object_joblib(file=compressed_model_path)
-            preprocessor=load_object(file=preprocessor_path)
+           print("After Loading")
+           data_scaled=preprocessor.transform(features)
+           model_prediction=model.predict(data_scaled)
+           return model_prediction
 
-            print("After Loading")
-            data_scaled=preprocessor.transform(features)
-            #model_prediction=model.predict(data_scaled)     # for small models
-            model_prediction=compressed_model.predict(data_scaled)
-            return model_prediction
 
-        except Exception as e:
-            raise CustomException(e,sys)
+       except Exception as e:
+           raise CustomException(e,sys)
 
 
 
 
+   #model_path = 's3://mlopsflightpricepredictionartifacts/model.pkl'
 
 class CustomData:
     def __init__(self,

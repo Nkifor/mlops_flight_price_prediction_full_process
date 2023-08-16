@@ -4,13 +4,13 @@ import bz2
 import numpy as np
 import pandas as pd
 import dill
-from pickle import load
+import pickle
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 from cachetools import LRUCache
-import concurrent.futures
 from src.exception import CustomException
 from functools import lru_cache
+import io
 
 
 def save_object(file, obj):
@@ -64,7 +64,7 @@ def load_object(file):
     try:
         with open(file, 'rb') as file_object:
 
-            return load(file_object)
+            return pickle.load(file_object)
 
     except Exception as e:
         raise CustomException(e, sys)
@@ -94,36 +94,46 @@ class LRUCache(dict):
 cache = LRUCache(maxsize=100)
 
 @lru_cache(maxsize=100)
-def load_compressed_object_joblib(file):
+def load_compressed_model_pickle(file):
     try:
         if file in cache:
             return cache[file]
         else:
             with bz2.BZ2File(file, 'rb') as f:
-                obj = load(f)
-                cache[file] = obj
-                return obj
-    except EOFError as e:
-        raise CustomException(f"Error loading compressed object from file {file}: {e}. The compressed data may be incomplete or corrupted. Please regenerate the file or obtain a new copy.", sys)
+                compressed_model = f.read()
+                compressed_model_io = io.BytesIO(compressed_model)
+                loaded_model = pickle.load(compressed_model_io)
+                cache[file] = loaded_model
+                return loaded_model
     except Exception as e:
-        raise CustomException(f"Error loading compressed object from file {file}: {e}", sys)
+        raise CustomException(f"Error loading compressed model from file {file}: {e}", sys)
 
 
 
-
-#def load_compressed_object(file):
-#    try:                                                     #First  compression approach
-#        with bz2.BZ2File(file, 'rb') as file_object:
-#            return pickle.load(file_object)
-#    #except Exception as e:
-#    #    raise CustomException(e, sys)
-#    #try:                                                      #Second compression approach
-#    #    with open(file, 'rb') as file_object:
-#    #        decomp = bz2.BZ2Decompressor()
-#    #        data = file_object.read()
-#    #        decompressed_data = decomp.decompress(data)
-#    #        return pickle.loads(decompressed_data)
-#
-#
+#def load_compressed_model(file):
+#    try:
+#        with bz2.BZ2File(file, 'rb') as f:
+#            compressed_model = f.read()
+#            loaded_model = pickle.load(compressed_model)
+#            return loaded_model
 #    except Exception as e:
-#        raise CustomException(e, sys)
+#        print(f"Error loading compressed model: {e}")
+#        return None
+
+
+def load_compressed_object(file):
+    try:                                                     #First  compression approach
+        with bz2.BZ2File(file, 'rb') as file_object:
+            return pickle.load(file_object)
+    #except Exception as e:
+    #    raise CustomException(e, sys)
+    #try:                                                      #Second compression approach
+    #    with open(file, 'rb') as file_object:
+    #        decomp = bz2.BZ2Decompressor()
+    #        data = file_object.read()
+    #        decompressed_data = decomp.decompress(data)
+    #        return pickle.loads(decompressed_data)
+
+
+    except Exception as e:
+        raise CustomException(e, sys)

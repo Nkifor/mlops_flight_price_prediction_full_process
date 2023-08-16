@@ -4,13 +4,13 @@ import bz2
 import numpy as np
 import pandas as pd
 import dill
-import pickle
+from pickle import load
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 from cachetools import LRUCache
 import concurrent.futures
-
 from src.exception import CustomException
+from functools import lru_cache
 
 
 def save_object(file, obj):
@@ -64,7 +64,7 @@ def load_object(file):
     try:
         with open(file, 'rb') as file_object:
 
-            return pickle.load(file_object)
+            return load(file_object)
 
     except Exception as e:
         raise CustomException(e, sys)
@@ -74,15 +74,33 @@ def load_object(file):
 
 
 
+class LRUCache(dict):
+    def __init__(self, maxsize):
+        self.maxsize = maxsize
+        super().__init__()
+
+    def __setitem__(self, key, value):
+        if len(self) >= self.maxsize:
+            oldest = next(iter(self))
+            del self[oldest]
+        super().__setitem__(key, value)
+
+    def __getitem__(self, key):
+        value = super().__getitem__(key)
+        self.pop(key)
+        self[key] = value
+        return value
+
 cache = LRUCache(maxsize=100)
 
-def load_compressed_object(file):
+@lru_cache(maxsize=100)
+def load_compressed_object_joblib(file):
     try:
         if file in cache:
             return cache[file]
         else:
             with bz2.BZ2File(file, 'rb') as f:
-                obj = pickle.load(f)
+                obj = load(f)
                 cache[file] = obj
                 return obj
     except EOFError as e:

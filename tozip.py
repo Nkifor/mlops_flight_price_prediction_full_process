@@ -26,3 +26,5 @@ def zipmodel_with_bz2(file):
 
 zipmodel_with_bz2("artifacts/model.pkl")
 
+
+

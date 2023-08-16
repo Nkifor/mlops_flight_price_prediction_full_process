@@ -3,7 +3,9 @@ import os
 import pandas as pd
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import load_object, load_compressed_object
+from src.utils import load_object, load_compressed_object_joblib
+
+
 
 
 
@@ -27,7 +29,7 @@ class PredictionPipeline:
 
             print("Before Loading")
             #model=load_object(file=model_path)
-            compressed_model = load_compressed_object(file=compressed_model_path)
+            compressed_model = load_compressed_object_joblib(file=compressed_model_path)
             preprocessor=load_object(file=preprocessor_path)
 
             print("After Loading")

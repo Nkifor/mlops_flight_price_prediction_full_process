@@ -12,4 +12,5 @@ dvc
 dvc-s3
 awscli
 git-lfs
+cachetools
 #-e .

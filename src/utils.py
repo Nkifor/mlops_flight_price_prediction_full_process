@@ -13,7 +13,7 @@ from src.exception import CustomException
 from functools import lru_cache
 import logging
 import io
-import chardet
+#import chardet
 
 
 def save_object(file, obj):
@@ -130,12 +130,12 @@ def load_compressed_gzip_model(file):
     return model
 
 
-def load_d_gz_model_to_check(path):
-    with gzip.open(path, 'rb') as f:
-        data = f.read()
-        encoding = chardet.detect(data)['encoding']
-        return data.decode(encoding)
-
+#def load_d_gz_model_to_check(path):
+#    with gzip.open(path, 'rb') as f:
+#        data = f.read()
+#        encoding = chardet.detect(data)['encoding']
+#        return data.decode(encoding)
+#
 
 def load_compressed_object(file):
     try:
@@ -175,6 +175,6 @@ def load_compressed_object(file):
         raise CustomException(e, sys)
 
 
-l#oad_d_gz_model_to_check("artifacts/model.pkl.gz")
+#l#oad_d_gz_model_to_check("artifacts/model.pkl.gz")
 
         #os.path.join('artifacts','model.pkl.gz')

@@ -13,4 +13,5 @@ dvc-s3
 awscli
 git-lfs
 cachetools
+chardet
 #-e .

@@ -13,6 +13,7 @@ from src.exception import CustomException
 from functools import lru_cache
 import logging
 import io
+import chardet
 
 
 def save_object(file, obj):
@@ -126,7 +127,14 @@ def load_compressed_model_pickle(file):
 def load_compressed_gzip_model(file):
     with gzip.open(file, 'rb') as f:
         model = dill.load(f)
-        return model
+    return model
+
+
+def load_d_gz_model_to_check(path):
+    with gzip.open(path, 'rb') as f:
+        data = f.read()
+        encoding = chardet.detect(data)['encoding']
+        return data.decode(encoding)
 
 
 def load_compressed_object(file):
@@ -165,3 +173,8 @@ def load_compressed_object(file):
         # Handle other errors
         logging.error(f"An unexpected error occurred while loading compressed data from file {file}: {e}")
         raise CustomException(e, sys)
+
+
+l#oad_d_gz_model_to_check("artifacts/model.pkl.gz")
+
+        #os.path.join('artifacts','model.pkl.gz')

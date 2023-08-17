@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request
 import numpy as np
 import pandas as pd
-import logging
-from sklearn.preprocessing import StandardScaler
+#import logging
+#from sklearn.preprocessing import StandardScaler
 from src.pipeline.prediction_pipeline import PredictionPipeline, CustomData
 
 application = Flask(__name__,
@@ -47,7 +47,7 @@ def predict_datapoint():
         print("After Prediction")
         return render_template('home.html',results=rounded_results)
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080, debug=True) #AWS build
-    #app.run(host="0.0.0.0", debug=True) #local - for testing
+    #app.run(host="0.0.0.0", port=8080, debug=True) #AWS build
+    app.run(host="0.0.0.0", debug=True) #local - for testing
 
 

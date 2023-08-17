@@ -28,8 +28,21 @@ def zipmodel_with_bz2(file):
 
 #zipmodel_with_bz2("artifacts/model.pkl")
 
+def chceck_validity_of_model_pkl_gz(file):
+    with gzip.open(file, 'rb') as f:
+        try:
+            f.read(1)
+            print('File is a valid gzip file')
+        except OSError:
+            print('File is not a valid gzip file')
 
+#chceck_validity_of_model_pkl_gz("artifacts/model.pkl.gz")
 
+#serialized_model = dill.dumps(model)
+#
+## Compress the serialized model using gzip
+#with gzip.open('model2.pkl.gz', 'wb') as f:
+#    f.write(serialized_model)
 
 
 
@@ -46,4 +59,4 @@ def gzip_compress(file_in_pkl, buffer_size=65536):
             file_out.write(buf)
             #return file_out
 
-gzip_compress("artifacts/model.pkl")
+#gzip_compress("artifacts/model.pkl")

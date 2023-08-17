@@ -1,8 +1,8 @@
 import os
 import sys
 import bz2
-import numpy as np
-import pandas as pd
+#import numpy as np
+#import pandas as pd
 import dill
 import gzip
 import pickle

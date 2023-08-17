@@ -2,8 +2,10 @@ import sys
 import os
 import pandas as pd
 from src.exception import CustomException
-from src.logger import logging
-from src.utils import load_object, load_compressed_object, load_compressed_model_pickle, load_compressed_gzip_model
+#from src.logger import logging
+from src.utils import load_object, load_compressed_gzip_model
+#import dill
+#import gzip
 
 
 
@@ -18,34 +20,55 @@ from src.utils import load_object, load_compressed_object, load_compressed_model
 
 class PredictionPipeline:
    def __init__(self):
-       pass
+       compressed_model_path_gzip = os.path.join('artifacts','model.pkl.gz')
+       self.model = load_compressed_gzip_model(compressed_model_path_gzip)
+       preprocessor_path = os.path.join('artifacts','proprocessor.pkl')
+       self.preprocessor = load_object(file=preprocessor_path)
 
-   def predict(self,features):
+   def predict(self, features):
        try:
-           #model_path =os.path.join('artifacts', 'model.pkl')
-
-           #compressed_model_path_bz2 = os.path.join('artifacts','model.pkl.bz2')
-           compressed_model_path_gzip = os.path.join('artifacts','model.pkl.gz')
-
-
-           preprocessor_path = os.path.join('artifacts','proprocessor.pkl')
-
-           print("Before Loading")
-           #model=load_object(file=model_path)
-
-           #model=load_compressed_object(compressed_model_path_bz2)
-           model=load_compressed_gzip_model(compressed_model_path_gzip)
-
-           preprocessor=load_object(file=preprocessor_path)
-
-           print("After Loading")
-           data_scaled=preprocessor.transform(features)
-           model_prediction=model.predict(data_scaled)
+           data_scaled = self.preprocessor.transform(features)
+           model_prediction = self.model.predict(data_scaled)
            return model_prediction
-
-
        except Exception as e:
-           raise CustomException(e,sys)
+           raise CustomException(e, sys)
+   #def __init__(self):
+   #    pass
+#
+   #def predict(self,features):
+   #    try:
+   #        #model_path =os.path.join('artifacts', 'model.pkl')
+#
+   #        #compressed_model_path_bz2 = os.path.join('artifacts','model.pkl.bz2')
+   #        compressed_model_path_gzip = os.path.join('artifacts','model.pkl.gz')
+   #        compressed_model_path_gzip2 = os.path.join('artifacts','model2.pkl.gz')
+#
+#
+   #        preprocessor_path = os.path.join('artifacts','proprocessor.pkl')
+#
+   #        print("Before Loading")
+   #        #model=load_object(file=model_path)
+#
+   #        #model=load_compressed_object(compressed_model_path_bz2)
+   #        model=load_compressed_gzip_model(compressed_model_path_gzip)
+#
+   #        serialized_model = dill.dumps(model)
+   #        with gzip.open(compressed_model_path_gzip2, 'wb') as f:
+   #                     f.write(serialized_model)
+   #                     model_checked=load_compressed_gzip_model(compressed_model_path_gzip2)
+#
+   #         # Compress the serialized model using gzip
+#
+   #        preprocessor=load_object(file=preprocessor_path)
+#
+   #        print("After Loading")
+   #        data_scaled=preprocessor.transform(features)
+   #        model_prediction=model_checked.predict(data_scaled)
+   #        return model_prediction
+#
+#
+   #    except Exception as e:
+   #        raise CustomException(e,sys)
 
 
 

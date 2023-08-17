@@ -3,6 +3,8 @@ import shutil
 import bz2
 import pickle
 from zipfile import ZipFile, ZIP_DEFLATED
+import dill
+import gzip
 
 def create_zip_archive_with_exclusions(directory, zip_filename, exclude_patterns=None):
     with ZipFile(zip_filename, 'w', compression=ZIP_DEFLATED) as zipf:
@@ -24,7 +26,24 @@ def zipmodel_with_bz2(file):
 
 
 
-zipmodel_with_bz2("artifacts/model.pkl")
+#zipmodel_with_bz2("artifacts/model.pkl")
 
 
 
+
+
+
+#def gzip_compress(file_in_pkl, buffer_size=65536):
+#    with open(file_in_pkl, 'rb') as file_in, gzip.open('artifacts/model.pkl.gz', 'wb', compresslevel=9, buffer_size=buffer_size) as file_out:
+#        shutil.copyfileobj(file_in, file_out)
+
+def gzip_compress(file_in_pkl, buffer_size=65536):
+    with open(file_in_pkl, 'rb') as file_in, gzip.open('artifacts/model.pkl.gz', 'wb', compresslevel=9) as file_out:
+        while True:
+            buf = file_in.read(buffer_size)
+            if not buf:
+                break
+            file_out.write(buf)
+            #return file_out
+
+gzip_compress("artifacts/model.pkl")

@@ -3,7 +3,7 @@ import os
 import pandas as pd
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import load_object, load_compressed_object, load_compressed_model_pickle
+from src.utils import load_object, load_compressed_object, load_compressed_model_pickle, load_compressed_gzip_model
 
 
 
@@ -24,7 +24,8 @@ class PredictionPipeline:
        try:
            #model_path =os.path.join('artifacts', 'model.pkl')
 
-           compressed_model_path = os.path.join('artifacts','model.pkl.bz2')
+           #compressed_model_path_bz2 = os.path.join('artifacts','model.pkl.bz2')
+           compressed_model_path_gzip = os.path.join('artifacts','model.pkl.gz')
 
 
            preprocessor_path = os.path.join('artifacts','proprocessor.pkl')
@@ -32,7 +33,9 @@ class PredictionPipeline:
            print("Before Loading")
            #model=load_object(file=model_path)
 
-           model=load_compressed_object(compressed_model_path)
+           #model=load_compressed_object(compressed_model_path_bz2)
+           model=load_compressed_gzip_model(compressed_model_path_gzip)
+
            preprocessor=load_object(file=preprocessor_path)
 
            print("After Loading")

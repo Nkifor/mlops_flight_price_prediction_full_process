@@ -4,6 +4,7 @@ import bz2
 import numpy as np
 import pandas as pd
 import dill
+import gzip
 import pickle
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
@@ -120,6 +121,12 @@ def load_compressed_model_pickle(file):
 #    except Exception as e:
 #        print(f"Error loading compressed model: {e}")
 #        return None
+
+
+def load_compressed_gzip_model(file):
+    with gzip.open(file, 'rb') as f:
+        model = dill.load(f)
+        return model
 
 
 def load_compressed_object(file):

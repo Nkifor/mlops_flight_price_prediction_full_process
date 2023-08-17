@@ -60,3 +60,5 @@ def gzip_compress(file_in_pkl, buffer_size=65536):
             #return file_out
 
 #gzip_compress("artifacts/model.pkl")
+
+

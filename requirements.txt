@@ -5,7 +5,7 @@ matplotlib
 scikit-learn
 catboost
 xgboost
-dill
+dill==0.3.7
 scipy
 Flask
 dvc
@@ -14,4 +14,5 @@ awscli
 git-lfs
 cachetools
 chardet
+
 #-e .

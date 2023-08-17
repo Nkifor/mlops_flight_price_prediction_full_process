@@ -1,8 +1,7 @@
 FROM python:3.8.17-slim-buster
 LABEL maintainer="Nkifor"
 
-WORKDIR /app
-COPY . /app
+
 
 RUN apt update -y && apt install awscli -y
 RUN apt-get install -y --no-install-recommends \

@@ -5,7 +5,21 @@
 
 ## Description and shortened context of the training data
 
-The project involves taking data, analyzing it, processing it to ultimately apply the chosen machine learning model to indicate price of flight based on given factors and then deploying the model on the server in the form of a web application.
+The project involves taking data, analyzing it, processing it to ultimately apply the chosen machine learning model to indicate price of flight based on given factors and then deploying the model on ECS native orchestraton in the form of a web application.
+
+
+## Main Technologies used:
+
+
+
+![Scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+![ECR](https://img.shields.io/badge/ECR-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![ECS](https://img.shields.io/badge/ECS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Fargate](https://img.shields.io/badge/Fargate-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-%232496ED.svg?style=for-the-badge&logo=docker&logoColor=white)
+![XGBoost](https://img.shields.io/badge/Xgboost-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)
 
 
 ### Data Collection
@@ -15,7 +29,7 @@ The project involves taking data, analyzing it, processing it to ultimately appl
 Dataset contains information about flight booking options from the website Easemytrip for flight travel between India's top 6 metro cities. There are 300261 datapoints and 11 features in the cleaned dataset.
 
 
-## Stages of the project
+## Stages to reproduce the project
 
 1. Planning desired outcome.
 2. Configuration of environment setup.
@@ -27,30 +41,12 @@ Dataset contains information about flight booking options from the website Easem
 6. Local deployment of prediction model
 7. Model compression in local environment
 8. Setting Dockerfile locally for Run it on Virtual Machine EC2 with ECR after setting IAM
-9. Setting Github Runner and Action for CI/CD to connect with AWS
-10. Run of workflow
-11. The prediction display may take about 30 seconds due to the reading of the compressed model
+9. Creating task definition within ECS with required memory and cpu to perform task in the next step
+10. Creating ECS cluster to run a service which use task definition to create task
+11. Creating of an application load balancer to distribute prediction requests from users 
+12. Final setting inbound rules and security groups
+13. The prediction is available on DNS adress of created load balancer
 
-
-
-### Commands to setup Docker on EC2:
-
-1. sudo apt-get update -y
-2. sudo apt-get upgrade
-3. curl -fsSL https://get.docker.com -o get-docker.sh
-4. sudo sh get-docker.sh
-5. sudo usermod -aG docker ubuntu
-6. newgrp docker
-
-### Procedure to Configure EC2 as self-hosted runner:
-
-1. Setting Runner based on Github guidlines
-2. Adding shown below Github Secrets:
-- AWS_ACCESS_KEY_ID=
-- AWS_SECRET_ACCESS_KEY=
-- AWS_REGION =
-- AWS_ECR_LOGIN_URI =
-- ECR_REPOSITORY_NAME =
 
 
 
